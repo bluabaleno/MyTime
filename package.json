@@ -1,0 +1,24 @@
+{
+    "author": "BluaBaleno",
+    "dependencies": {},
+    "keywords": [],
+    "name": "mytime",
+    "pebble": {
+        "displayName": "MyTime",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "diorite"
+        ],
+        "uuid": "6cf8d481-353e-424b-b931-1c8a133a8b6e",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "1.0.0"
+}
