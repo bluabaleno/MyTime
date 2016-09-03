@@ -1,4 +1,8 @@
 #include <pebble.h>
+#include "src/c/pebble-assist.h"
+#include "src/c/persist.h"
+#include "src/c/setting.h"
+#include "src/c/timers.h"
 
 #include "Activities.h"
 
