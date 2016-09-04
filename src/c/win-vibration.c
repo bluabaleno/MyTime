@@ -5,10 +5,9 @@
 #include "src/c/pebble-assist.h"
 #include "src/c/bitmap-loader.h"
 #include "win-vibration.h"
-
 #include "timer.h"
 #include "common.h"
-#include "icons.h"
+#include "src/c/icons.h"
 
 static uint16_t menu_get_num_sections_callback(MenuLayer *me, void *data);
 static uint16_t menu_get_num_rows_callback(MenuLayer *me, uint16_t section_index, void *data);

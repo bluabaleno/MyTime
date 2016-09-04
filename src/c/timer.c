@@ -3,6 +3,7 @@
 #include "timers.h"
 #include "timer.h"
 #include "setting.h"
+#include "src/c/win-vibrate.h"
 
 static void timer_tick(void* context);
 static void timer_finish(Timer* timer);

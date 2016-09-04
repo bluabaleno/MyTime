@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../timer.h"
+#include "src/c/timer.h"
 
 typedef void (*VibrationCallback)(TimerVibration vibration);
 

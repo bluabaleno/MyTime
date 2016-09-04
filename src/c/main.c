@@ -3,8 +3,9 @@
 #include "src/c/persist.h"
 #include "src/c/setting.h"
 #include "src/c/timers.h"
-
+#include "src/c/bitmap-loader.h"
 #include "Activities.h"
+#include "src/c/icons.h"
 
 #define NUM_WINDOWS 4
 

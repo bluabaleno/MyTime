@@ -3,8 +3,10 @@
 
 #include "win-vibrate.h"
 #include "src/c/bitmap-loader.h"
-#include <pebble-assist.h>
-#include "../common.h"
+#include "src/c/pebble-assist.h"
+#include "common.h"
+#include "src/c/icons.h"
+#include "src/c/timer.h"
 
 void click_config_provider(Window* window);
 void click_handler(ClickRecognizerRef recognizer, void* context);

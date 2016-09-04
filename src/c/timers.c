@@ -9,7 +9,6 @@
 #include "src/c/migration.h"
 #include "setting.h"
 
-
 typedef struct {
   Timer timers[TIMER_BLOCK_SIZE];
   uint8_t total_timers;

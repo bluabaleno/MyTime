@@ -38,6 +38,7 @@ src/bitmap-loader.h
 
 #include <pebble.h>
 
+
 // Initialise the bitmap loading library.
 void bitmaps_init(void);
 
