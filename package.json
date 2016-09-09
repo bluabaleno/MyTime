@@ -11,6 +11,24 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/cross.png",
+                    "name": "CROSS",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/tick.png",
+                    "name": "TICK",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/confirm.png",
+                    "name": "CONFIRM",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/icons.png",
                     "name": "ICONS_16",
                     "targetPlatforms": null,

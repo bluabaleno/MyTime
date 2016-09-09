@@ -3,6 +3,7 @@
  */
 
 #include "Activities.h"
+#include "src/c/timerWin.h"
 
 static Window *s_main_window;
 static MenuLayer *s_menu_layer;
@@ -52,6 +53,35 @@ static void draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex 
   }
 }
 
+static void select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *context) {
+  switch(cell_index->row) {
+    case 0:
+      dialog_choice_window_push();
+      break;
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    case 7:
+      break;
+    case 8:
+      break;
+    case 9:
+      break;
+    case 10:
+      break;
+    default:
+      break;
+  }
+}
 
 static int16_t get_cell_height_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *context) {
   return PBL_IF_ROUND_ELSE(
@@ -74,7 +104,7 @@ static void window_load(Window *window) {
       .get_num_rows = get_num_rows_callback,
       .draw_row = draw_row_callback,
       .get_cell_height = get_cell_height_callback,
-//       .select_click = select_callback,
+      .select_click = select_callback,
   });
   layer_add_child(window_layer, menu_layer_get_layer(s_menu_layer));
   
