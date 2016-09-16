@@ -11,6 +11,18 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/sleep.png",
+                    "name": "SLEEP",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/pause.png",
+                    "name": "PAUSE",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/cross.png",
                     "name": "CROSS",
                     "targetPlatforms": null,

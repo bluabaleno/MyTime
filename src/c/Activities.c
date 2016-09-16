@@ -4,10 +4,12 @@
 
 #include "Activities.h"
 #include "src/c/timerWin.h"
+#include "timer.h"
 
 static Window *s_main_window;
 static MenuLayer *s_menu_layer;
 static TextLayer *s_list_message_layer;
+static Timer* s_timer = NULL;
 
 static uint16_t get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *context) {
   return LIST_MESSAGE_WINDOW_NUM_ROWS;
@@ -57,6 +59,7 @@ static void select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index,
   switch(cell_index->row) {
     case 0:
       dialog_choice_window_push();
+      s_timer = timer_create_timer();
       break;
     case 1:
       break;
