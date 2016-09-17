@@ -7,15 +7,30 @@
 #include "icons.h"
 #include "src/c/timer.h"
 #include "src/c/timers.h"
+#include "Activities.h"
+#include "src/c/setting.h"
+
+
 
 static Window *s_main_window;
 static TextLayer *s_label_layer;
 static BitmapLayer *s_icon_layer;
 static ActionBarLayer *s_action_bar_layer;
+static Timer* s_timer;
+
 
 static GBitmap *s_icon_bitmap, *s_tick_bitmap, *s_cross_bitmap;
 
+char tmp[16];
+s_timer = timer_create_stopwatch();
+timer_start(s_timer);
+
 static void window_load(Window *window) {
+
+//   char timerBuffer[32];
+//   snprintf(timerBuffer, sizeof(timerBuffer), "%d", (int)(s_timer->length / 60));
+  timer_time_str(s_timer->length, settings()->timers_hours, tmp, sizeof(tmp));
+  
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
@@ -29,7 +44,7 @@ static void window_load(Window *window) {
 
   const GEdgeInsets label_insets = {.top = 112, .right = ACTION_BAR_WIDTH, .left = ACTION_BAR_WIDTH / 2};
   s_label_layer = text_layer_create(grect_inset(bounds, label_insets));
-  text_layer_set_text(s_label_layer, DIALOG_CHOICE_WINDOW_MESSAGE);
+  text_layer_set_text(s_label_layer, tmp);
   text_layer_set_background_color(s_label_layer, GColorClear);
   text_layer_set_text_alignment(s_label_layer, GTextAlignmentCenter);
   text_layer_set_font(s_label_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
@@ -38,10 +53,13 @@ static void window_load(Window *window) {
   s_tick_bitmap = gbitmap_create_with_resource(RESOURCE_ID_PAUSE);
   s_cross_bitmap = gbitmap_create_with_resource(RESOURCE_ID_CROSS);
   
+  
+  //here is how we'll operate each button.
   s_action_bar_layer = action_bar_layer_create();
   action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_tick_bitmap);
   action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_DOWN, s_cross_bitmap);
   action_bar_layer_add_to_window(s_action_bar_layer, window);
+  
 }
 
 static void window_unload(Window *window) {
