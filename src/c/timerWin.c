@@ -1,12 +1,12 @@
 /**
  * Example implementation of the dialog choice UI pattern.
  */
-
+#include <pebble.h>
 #include "timerWin.h"
 #include "src/c/bitmap-loader.h"
 #include "icons.h"
-#include "src/c/timer.h"
-#include "src/c/timers.h"
+// #include "src/c/timer.h"
+// #include "src/c/timers.h"
 #include "Activities.h"
 #include "src/c/setting.h"
 
@@ -22,15 +22,46 @@ static Timer* s_timer;
 static GBitmap *s_icon_bitmap, *s_tick_bitmap, *s_cross_bitmap;
 
 char tmp[16];
-s_timer = timer_create_stopwatch();
-timer_start(s_timer);
+uint32_t time_stopwatch;
+bool pause = false;
 
-static void window_load(Window *window) {
 
-//   char timerBuffer[32];
-//   snprintf(timerBuffer, sizeof(timerBuffer), "%d", (int)(s_timer->length / 60));
-  timer_time_str(s_timer->length, settings()->timers_hours, tmp, sizeof(tmp));
+// doesn't work 
+static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (pause){
+    pause = false;
+  } else {
+    pause = true;
+  }
   
+  //probably also change the icon here 
+}
+
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "clicked");
+}
+
+static void click_config_provider(void *context) {
+  window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
+  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
+
+}
+
+static void update_time() {
+  if(!pause){
+    time_stopwatch++;
+  }
+  
+  timer_time_str(time_stopwatch, settings()->timers_hours, tmp, sizeof(tmp));
+  
+  text_layer_set_text(s_label_layer, tmp );
+}
+
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  update_time();
+}
+
+static void window_load(Window *window) {    
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
@@ -44,7 +75,9 @@ static void window_load(Window *window) {
 
   const GEdgeInsets label_insets = {.top = 112, .right = ACTION_BAR_WIDTH, .left = ACTION_BAR_WIDTH / 2};
   s_label_layer = text_layer_create(grect_inset(bounds, label_insets));
-  text_layer_set_text(s_label_layer, tmp);
+  
+  //time updates here:
+  text_layer_set_text(s_label_layer, tmp );
   text_layer_set_background_color(s_label_layer, GColorClear);
   text_layer_set_text_alignment(s_label_layer, GTextAlignmentCenter);
   text_layer_set_font(s_label_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
@@ -53,13 +86,14 @@ static void window_load(Window *window) {
   s_tick_bitmap = gbitmap_create_with_resource(RESOURCE_ID_PAUSE);
   s_cross_bitmap = gbitmap_create_with_resource(RESOURCE_ID_CROSS);
   
-  
-  //here is how we'll operate each button.
   s_action_bar_layer = action_bar_layer_create();
   action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_tick_bitmap);
   action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_DOWN, s_cross_bitmap);
   action_bar_layer_add_to_window(s_action_bar_layer, window);
   
+  //updating the time
+  tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+
 }
 
 static void window_unload(Window *window) {
@@ -78,6 +112,7 @@ static void window_unload(Window *window) {
 void dialog_choice_window_push() {
   if(!s_main_window) {
     s_main_window = window_create();
+//     window_set_click_config_provider(s_main_window, click_config_provider);
     window_set_background_color(s_main_window, PBL_IF_COLOR_ELSE(GColorJaegerGreen, GColorWhite));
     window_set_window_handlers(s_main_window, (WindowHandlers) {
         .load = window_load,
