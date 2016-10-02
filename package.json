@@ -11,6 +11,12 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/play.png",
+                    "name": "PLAY",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/sleep.png",
                     "name": "SLEEP",
                     "targetPlatforms": null,
