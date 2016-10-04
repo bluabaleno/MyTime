@@ -8,6 +8,8 @@
 #include "Activities.h"
 #include "src/c/setting.h"
 
+#define  ACTIVITY_KEY 1
+
 #define  TIMER_KEY 1
 #define  TIMER_DEFAULT 0
 
@@ -59,9 +61,14 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   pause = true;
+  time_end = (uint32_t)time(NULL);
+  
+  //copied from the up handler, doesn't work.
+//   time_elapse = time_end - time_begin;
+//   APP_LOG(APP_LOG_LEVEL_DEBUG, "time_begin: %d time_end %d", (int)time_begin, (int)time_end);
+//   APP_LOG(APP_LOG_LEVEL_DEBUG, "duration: %d ", (int)time_elapse);
   time_stopwatch = TIMER_DEFAULT;
   
-  APP_LOG(APP_LOG_LEVEL_DEBUG,"%d %d", (int)time_begin, (int)time_end);
 }
 
 static void click_config_provider(void *context) {
@@ -104,7 +111,6 @@ static void window_load(Window *window) {
   } else{
     time_stopwatch = TIMER_DEFAULT;
   }
-//   time_stopwatch = persist_exists(TIMER_KEY) ? persist_read_int(TIMER_KEY) : TIMER_DEFAULT;
 
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
