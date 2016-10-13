@@ -1,12 +1,16 @@
 {
     "author": "BluaBaleno",
-    "dependencies": {},
+    "dependencies": {
+        "pebble-clay": "^1.0.0"
+    },
     "keywords": [],
     "name": "mytime",
     "pebble": {
         "displayName": "MyTime",
         "enableMultiJS": true,
-        "messageKeys": [],
+        "messageKeys": [
+            "LOG_KEY"
+        ],
         "projectType": "native",
         "resources": {
             "media": [

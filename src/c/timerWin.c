@@ -39,12 +39,28 @@ uint32_t time_begin, time_end, time_elapse;
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 //   APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", (int)time_end);
+   // Begin dictionary  
+  
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "I've clicked");
+  
+    // Begin dictionary
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
 
+  int step_count = 0;
+
+  // Add a key-value pair
+  dict_write_cstring(iter, 0, "jacky");
+  dict_write_int32(iter, 1, 1000); // STEPS?!?!
+
+  // Send the message!
+  app_message_outbox_send();
 
 }
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   pause = !pause;
-
+  
+  //when it is paused, it logs the beginning time and the end time for this session and send the data to firebase
   if(pause){
     action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_play_bitmap);
     time_end = (uint32_t)time(NULL);
@@ -91,6 +107,10 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
 
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
+
 static void window_load(Window *window) {
   
   time_begin = (uint32_t)time(NULL);
@@ -111,7 +131,7 @@ static void window_load(Window *window) {
   } else{
     time_stopwatch = TIMER_DEFAULT;
   }
-
+  
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
@@ -145,6 +165,11 @@ static void window_load(Window *window) {
   
   //updating the time
   tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
+  
+    // Open AppMessage
+  const int inbox_size = 128;
+  const int outbox_size = 128;
+  app_message_open(inbox_size, outbox_size);
 }
 
 static void window_unload(Window *window) {
@@ -175,6 +200,10 @@ void dialog_choice_window_push() {
         .load = window_load,
         .unload = window_unload,
     });
+    
+    app_message_register_outbox_sent(outbox_sent_callback);
+
+    
   }
   window_stack_push(s_main_window, true);
 }
