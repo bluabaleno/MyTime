@@ -274,8 +274,14 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log('AppMessage received!');
+    
+  var dict = e.payload;
+  console.log(dict.END);
+  //send the data to firebase
   var myDataRef = new Firebase('https://mytime-e1945.firebaseio.com/');
-	myDataRef.push({name: "username", text: "steps"});
+    myDataRef.push(dict);
+// 	myDataRef.push({name: "username", text: "steps"});
+    
   }
 
 );

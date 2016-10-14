@@ -9,7 +9,8 @@
         "displayName": "MyTime",
         "enableMultiJS": true,
         "messageKeys": [
-            "LOG_KEY"
+            "BEGIN",
+            "END[2]"
         ],
         "projectType": "native",
         "resources": {

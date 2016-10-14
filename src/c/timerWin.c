@@ -37,6 +37,11 @@ bool pause = PAUSE_DEFAULT;
 
 uint32_t time_begin, time_end, time_elapse;
 
+// enum {
+//   MESSAGE_KEY_BEGIN = 1,
+//   MESSAGE_KEY_END = 2,
+// };
+
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 //   APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", (int)time_end);
    // Begin dictionary  
@@ -44,17 +49,17 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "I've clicked");
   
     // Begin dictionary
-  DictionaryIterator *iter;
-  app_message_outbox_begin(&iter);
+//   DictionaryIterator *iter;
+//   app_message_outbox_begin(&iter);
 
-  int step_count = 0;
+//   int step_count = 0;
 
-  // Add a key-value pair
-  dict_write_cstring(iter, 0, "jacky");
-  dict_write_int32(iter, 1, 1000); // STEPS?!?!
+//   // Add a key-value pair
+//   dict_write_cstring(iter, 0, "jacky");
+//   dict_write_int32(iter, 1, 1000); // STEPS?!?!
 
-  // Send the message!
-  app_message_outbox_send();
+//   // Send the message!
+//   app_message_outbox_send();
 
 }
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -67,6 +72,16 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
     time_elapse = time_end - time_begin;
     APP_LOG(APP_LOG_LEVEL_DEBUG, "time_begin: %d time_end %d", (int)time_begin, (int)time_end);
     APP_LOG(APP_LOG_LEVEL_DEBUG, "duration: %d ", (int)time_elapse);
+    
+    
+    //beginning to encode and send time data
+    DictionaryIterator *iter;
+    app_message_outbox_begin(&iter);
+    
+    dict_write_int32(iter, MESSAGE_KEY_BEGIN, (int)time_begin);
+    dict_write_int32(iter, MESSAGE_KEY_END, (int)time_end);
+    
+    app_message_outbox_send();
 
   }else {
     action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_pause_bitmap);
