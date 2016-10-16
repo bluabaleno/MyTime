@@ -276,7 +276,9 @@ Pebble.addEventListener('appmessage',
     console.log('AppMessage received!');
     
   var dict = e.payload;
-  console.log(dict.END);
+  console.log(JSON.stringify(dict));
+      
+  
   //send the data to firebase
   var myDataRef = new Firebase('https://mytime-e1945.firebaseio.com/');
     myDataRef.push(dict);
