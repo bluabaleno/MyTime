@@ -19,86 +19,68 @@
 #define  UNIX_TIME_KEY 3 
 #define  UNIX_TIME_DEFAULT 0
 
-#define  TIME_END_KEY 4 
-#define  TIME_END_DEFAULT 0
+#define  TIME_end_sleep_KEY 4 
+#define  TIME_end_sleep_DEFAULT 0
   
 static Window *s_main_window;
 static TextLayer *s_label_layer;
 static BitmapLayer *s_icon_layer;
 static ActionBarLayer *s_action_bar_layer;
-static Timer* s_timer;
+ //static Timer* s_timer;
 
 
 static GBitmap *s_icon_bitmap, *s_pause_bitmap, *s_cross_bitmap, *s_play_bitmap;
 
-char tmp[16];
-uint32_t time_stopwatch = TIMER_DEFAULT;
+char tmp_sleep[16];
+uint32_t time_stopwatch_sleep = TIMER_DEFAULT;
 bool pause = PAUSE_DEFAULT;
 
-uint32_t time_begin, time_end, time_elapse;
+uint32_t time_begin_sleep, time_end_sleep, time_elapse_sleep;
 
-// enum {
-//   MESSAGE_KEY_BEGIN = 1,
-//   MESSAGE_KEY_END = 2,
-// };
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-//   APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", (int)time_end);
-   // Begin dictionary  
+//   APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", (int)time_end_sleep);
+   // begin_sleep dictionary  
   
   APP_LOG(APP_LOG_LEVEL_DEBUG, "I've clicked");
   
-    // Begin dictionary
-//   DictionaryIterator *iter;
-//   app_message_outbox_begin(&iter);
-
-//   int step_count = 0;
-
-//   // Add a key-value pair
-//   dict_write_cstring(iter, 0, "jacky");
-//   dict_write_int32(iter, 1, 1000); // STEPS?!?!
-
-//   // Send the message!
-//   app_message_outbox_send();
 
 }
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   pause = !pause;
   
-  //when it is paused, it logs the beginning time and the end time for this session and send the data to firebase
+  //when it is paused, it logs the begin_sleepning time and the end_sleep time for this session and send_sleep the data to firebase
   if(pause){
     action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_play_bitmap);
-    time_end = (uint32_t)time(NULL);
-    time_elapse = time_end - time_begin;
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "time_begin: %d time_end %d", (int)time_begin, (int)time_end);
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "duration: %d ", (int)time_elapse);
+    time_end_sleep = (uint32_t)time(NULL);
+    time_elapse_sleep = time_end_sleep - time_begin_sleep;
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "time_begin_sleep: %d time_end_sleep %d", (int)time_begin_sleep, (int)time_end_sleep);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "duration: %d ", (int)time_elapse_sleep);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "messagekey begin_sleep: %d ", (int)MESSAGE_KEY_BEGIN);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "messagekey end_sleep: %d ", (int)MESSAGE_KEY_END);
     
-    
-    //beginning to encode and send time data
+    //begin_sleepning to encode and send_sleep time data
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
     
-    dict_write_int32(iter, MESSAGE_KEY_BEGIN, (int)time_begin);
-    dict_write_int32(iter, MESSAGE_KEY_END, (int)time_end);
+    dict_write_int32(iter, MESSAGE_KEY_BEGIN, (int)time_begin_sleep);
+    dict_write_int32(iter, MESSAGE_KEY_END, (int)time_end_sleep);
+    dict_write_cstring(iter, MESSAGE_KEY_ACTIVITY, "sleeping");
     
     app_message_outbox_send();
 
   }else {
     action_bar_layer_set_icon(s_action_bar_layer, BUTTON_ID_UP, s_pause_bitmap);
-    time_begin = (uint32_t)time(NULL);
+    time_begin_sleep = (uint32_t)time(NULL);
   }
     
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   pause = true;
-  time_end = (uint32_t)time(NULL);
+  time_end_sleep = (uint32_t)time(NULL);
   
-  //copied from the up handler, doesn't work.
-//   time_elapse = time_end - time_begin;
-//   APP_LOG(APP_LOG_LEVEL_DEBUG, "time_begin: %d time_end %d", (int)time_begin, (int)time_end);
-//   APP_LOG(APP_LOG_LEVEL_DEBUG, "duration: %d ", (int)time_elapse);
-  time_stopwatch = TIMER_DEFAULT;
+  time_stopwatch_sleep = TIMER_DEFAULT;
   
 }
 
@@ -110,12 +92,12 @@ static void click_config_provider(void *context) {
 
 static void update_time() {
   if(!pause){
-    time_stopwatch++;
+    time_stopwatch_sleep++;
   }
   
-  timer_time_str(time_stopwatch, settings()->timers_hours, tmp, sizeof(tmp));
+  timer_time_str(time_stopwatch_sleep, settings()->timers_hours, tmp_sleep, sizeof(tmp_sleep));
   
-  text_layer_set_text(s_label_layer, tmp );
+  text_layer_set_text(s_label_layer, tmp_sleep );
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -123,28 +105,28 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send_sleep success!");
 }
 
 static void window_load(Window *window) {
   
-  time_begin = (uint32_t)time(NULL);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "The current time is %d", (int)time_begin);
+  time_begin_sleep = (uint32_t)time(NULL);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "The current time is %d", (int)time_begin_sleep);
   pause = persist_exists(PAUSE_KEY) ? persist_read_bool(PAUSE_KEY)  :  PAUSE_DEFAULT;
-  time_end = persist_exists(TIME_END_KEY) ? persist_read_int(TIME_END_KEY)  : TIME_END_DEFAULT;
-  uint32_t time_elapse; 
+  time_end_sleep = persist_exists(TIME_end_sleep_KEY) ? persist_read_int(TIME_end_sleep_KEY)  : TIME_end_sleep_DEFAULT;
+  uint32_t time_elapse_sleep; 
   if (!pause){
-    time_elapse = time_begin - time_end;
+    time_elapse_sleep = time_begin_sleep - time_end_sleep;
   } else {
-    time_elapse = 0;
+    time_elapse_sleep = 0;
   }
   
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "The time_elapse  is %d", (int)time_elapse);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "The time_elapse_sleep  is %d", (int)time_elapse_sleep);
   
   if (persist_exists(TIMER_KEY)){
-    time_stopwatch = time_elapse + persist_read_int(TIMER_KEY);
+    time_stopwatch_sleep = time_elapse_sleep + persist_read_int(TIMER_KEY);
   } else{
-    time_stopwatch = TIMER_DEFAULT;
+    time_stopwatch_sleep = TIMER_DEFAULT;
   }
   
   Layer *window_layer = window_get_root_layer(window);
@@ -162,7 +144,7 @@ static void window_load(Window *window) {
   s_label_layer = text_layer_create(grect_inset(bounds, label_insets));
   
   //time updates here:
-  text_layer_set_text(s_label_layer, tmp );
+  text_layer_set_text(s_label_layer, tmp_sleep );
   text_layer_set_background_color(s_label_layer, GColorClear);
   text_layer_set_text_alignment(s_label_layer, GTextAlignmentCenter);
   text_layer_set_font(s_label_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
@@ -189,10 +171,10 @@ static void window_load(Window *window) {
 
 static void window_unload(Window *window) {
   persist_write_bool(PAUSE_KEY, pause);
-  persist_write_int(TIMER_KEY, time_stopwatch);
+  persist_write_int(TIMER_KEY, time_stopwatch_sleep);
   
   if (!pause){
-    persist_write_int(TIME_END_KEY, time_end = time_begin);
+    persist_write_int(TIME_end_sleep_KEY, time_end_sleep = time_begin_sleep);
   }
   
   text_layer_destroy(s_label_layer);
@@ -207,7 +189,7 @@ static void window_unload(Window *window) {
   s_main_window = NULL;
 }
 
-void dialog_choice_window_push() {
+void sleep_window_push() {
   if(!s_main_window) {
     s_main_window = window_create();
     window_set_background_color(s_main_window, PBL_IF_COLOR_ELSE(GColorJaegerGreen, GColorWhite));

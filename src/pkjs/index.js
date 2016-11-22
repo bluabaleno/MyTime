@@ -254,14 +254,9 @@ function Rc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
 Firebase.INTERNAL.forceWebSockets(); 
 
-var Clay = require('pebble-clay');
-var clayConfig = require('./config');
-var clay = new Clay(clayConfig);
-
-// function firebaseCall(username, steps) {
-// 	var myDataRef = new Firebase('https://mytime-e1945.firebaseio.com/');
-// 	myDataRef.push({name: username, text: steps});
-// }
+// var Clay = require('pebble-clay');
+// var clayConfig = require('./config');
+// var clay = new Clay(clayConfig);
 
 // Listen for when the watchface is opened
 Pebble.addEventListener('ready', 
@@ -274,16 +269,21 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log('AppMessage received!');
+    // Get the account token
+    console.log('Pebble Account Token: ' + Pebble.getAccountToken());
+  var account = Pebble.getAccountToken();
     
   var dict = e.payload;
-  console.log(JSON.stringify(dict));
-      
-  
+  var log = {
+    "activity" : dict.ACTIVITY,
+    "begin" : dict.BEGIN,
+    "end" : dict.END
+  };
+    
   //send the data to firebase
   var myDataRef = new Firebase('https://mytime-e1945.firebaseio.com/');
-    myDataRef.push(dict);
-// 	myDataRef.push({name: "username", text: "steps"});
-    
+//     myDataRef.push(log);
+    myDataRef.child(account).child(log.begin).set(log);
   }
 
 );

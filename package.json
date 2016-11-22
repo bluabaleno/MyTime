@@ -10,7 +10,8 @@
         "enableMultiJS": true,
         "messageKeys": [
             "BEGIN",
-            "END"
+            "END",
+            "ACTIVITY"
         ],
         "projectType": "native",
         "resources": {

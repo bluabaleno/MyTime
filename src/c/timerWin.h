@@ -4,4 +4,12 @@
 
 #define DIALOG_CHOICE_WINDOW_MESSAGE "00:00:00"
 
-void dialog_choice_window_push();
+void sleep_window_push();
+
+void write_window_push();
+
+void transport_window_push();
+
+void eat_window_push();
+
+void programming_window_push();

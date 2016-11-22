@@ -20,7 +20,7 @@ static void draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex 
       menu_cell_basic_draw(ctx, cell_layer, "Sleep", NULL, NULL);
       break;
     case 1:
-      menu_cell_basic_draw(ctx, cell_layer, "Getting ready", NULL, NULL);
+      menu_cell_basic_draw(ctx, cell_layer, "Writing", NULL, NULL);
       break;
     case 2:
       menu_cell_basic_draw(ctx, cell_layer, "Transport", NULL, NULL);
@@ -29,26 +29,26 @@ static void draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex 
       menu_cell_basic_draw(ctx, cell_layer, "Eat", NULL, NULL);
       break;
     case 4:
-      menu_cell_basic_draw(ctx, cell_layer, "Swimming", NULL, NULL);
-      break;
-    case 5:
       menu_cell_basic_draw(ctx, cell_layer, "Programming", NULL, NULL);
       break;
-    case 6:
-      menu_cell_basic_draw(ctx, cell_layer, "Writing", NULL, NULL);
-      break;
-    case 7:
-      menu_cell_basic_draw(ctx, cell_layer, "Higher Mathematics", NULL, NULL);
-      break;
-    case 8:
-      menu_cell_basic_draw(ctx, cell_layer, "Time management", NULL, NULL);
-      break;
-    case 9:
-      menu_cell_basic_draw(ctx, cell_layer, "Planning", NULL, NULL);
-      break;
-    case 10:
-      menu_cell_basic_draw(ctx, cell_layer, "Recovery", NULL, NULL);
-      break;
+//     case 5:
+//       menu_cell_basic_draw(ctx, cell_layer, "Getting reday", NULL, NULL);
+//       break;
+//     case 6:
+//       menu_cell_basic_draw(ctx, cell_layer, "Swimming", NULL, NULL);
+//       break;
+//     case 7:
+//       menu_cell_basic_draw(ctx, cell_layer, "Higher Mathematics", NULL, NULL);
+//       break;
+//     case 8:
+//       menu_cell_basic_draw(ctx, cell_layer, "Time management", NULL, NULL);
+//       break;
+//     case 9:
+//       menu_cell_basic_draw(ctx, cell_layer, "Planning", NULL, NULL);
+//       break;
+//     case 10:
+//       menu_cell_basic_draw(ctx, cell_layer, "Recovery", NULL, NULL);
+//       break;
     default:
       break;
   }
@@ -57,30 +57,34 @@ static void draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex 
 static void select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *context) {
   switch(cell_index->row) {
     case 0:
-      dialog_choice_window_push();
+      sleep_window_push();
       break;
     case 1:
+      write_window_push();
       break;
     case 2:
+      transport_window_push();
       break;
     case 3:
+      eat_window_push();
       break;
     case 4:
+      programming_window_push();
       break;
-    case 5:
-      break;
-    case 6:
-      break;
-    case 7:
-      break;
-    case 8:
-      break;
-    case 9:
-      break;
-    case 10:
-      break;
-    default:
-      break;
+//     case 5:
+//       break;
+//     case 6:
+//       break;
+//     case 7:
+//       break;
+//     case 8:
+//       break;
+//     case 9:
+//       break;
+//     case 10:
+//       break;
+//     default:
+//       break;
   }
 }
 
